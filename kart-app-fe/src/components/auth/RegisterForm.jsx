@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ToastNotification from "../notifications/ToastNotification";
 
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -13,19 +14,33 @@ export default function RegisterForm() {
 
   const registerRequest = async () => {
     try {
-      await fetch("https://localhost:7197/register", {
+      const response = await fetch("https://localhost:7197/register", {
         method: "POST",
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,
           password: password,
         }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+
+        if (errorData.errors) {
+          const errorMessages = Object.values(errorData.errors).flat();
+          ToastNotification("error", errorMessages.join("\n"));
+          console.log(errorMessages);
+        }
+        return;
+      }
+
+      ToastNotification("success", "Registration successful.");
+      navigate("/login");
     } catch (error) {
       console.error("Error during registration: ", error);
-      navigate("/register");
+      ToastNotification("error", "An error occurred during registration.");
     }
   };
 
