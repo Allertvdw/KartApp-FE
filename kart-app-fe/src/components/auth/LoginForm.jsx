@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
+import AuthService from "../auth/AuthService";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -25,19 +26,41 @@ export default function LoginForm() {
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-
-        if (errorData.errors) {
-          const errorMessages = Object.values(errorData.errors).flat();
-          ToastNotification("error", errorMessages.join("\n"));
-          console.log(errorMessages);
-        }
+      if (response.status === 401) {
+        ToastNotification("error", "Incorrect email or password.");
         return;
       }
 
-      ToastNotification("success", "Login successful.");
-      navigate("/");
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+
+      //   if (errorData.errors) {
+      //     const errorMessages = Object.values(errorData.errors).flat();
+      //     ToastNotification("error", errorMessages.join("\n"));
+      //     console.log(errorMessages);
+      //   } else if (errorData.message) {
+      //     ToastNotification("error", errorData.message);
+      //   }
+      //   return;
+      // }
+
+      const data = await response.json();
+      const { tokenType, accessToken, expiresIn, refreshToken } = data;
+
+      localStorage.setItem("tokenType", tokenType);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("expiresIn", expiresIn);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      const isAuthenticated = await AuthService.checkAuthentication();
+
+      if (isAuthenticated) {
+        ToastNotification("success", "Login successful.");
+        navigate("/");
+      } else {
+        ToastNotification("error", "Authentication failed.");
+        navigate("/login");
+      }
     } catch (error) {
       console.error("Error during login: ", error);
       navigate("/login");
