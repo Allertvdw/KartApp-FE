@@ -2,12 +2,16 @@ const AuthService = {
   isAuthenticated: false,
 
   async checkAuthentication() {
-    const token = localStorage.getItem("accessToken");
-
-    // Add refreshtoken
+    let token = localStorage.getItem("accessToken");
 
     if (!token) {
-      this.isAuthenticated = false;
+      const refreshed = await this.refreshToken();
+      if (!refreshed) {
+        this.isAuthenticated = false;
+        return false;
+      }
+
+      token = localStorage.getItem("accessToken");
     }
 
     try {
