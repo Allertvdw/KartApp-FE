@@ -64,9 +64,18 @@ export default function Header() {
               </li>
             </>
           ) : (
-            <button onClick={handleLogout} className="hover:text-red-500">
-              Logout
-            </button>
+            <>
+              <li>
+                <Link to="/profile" className="hover:text-red-500">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <button onClick={handleLogout} className="hover:text-red-500">
+                  Logout
+                </button>
+              </li>
+            </>
           )}
         </ul>
       </nav>
