@@ -1,7 +1,21 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthService from "../components/auth/AuthService";
+import ToastNotification from "../components/notifications/ToastNotification";
 
 export default function Header() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    AuthService.checkAuthentication();
+  }, []);
+
+  const handleLogout = () => {
+    AuthService.logout();
+    ToastNotification("success", "Logout successful.");
+    navigate("/");
+  };
+
   return (
     <header className="bg-black text-white shadow-md fixed top-0 left-0 right-0 z-50 border-b-4 border-red-500">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -36,16 +50,24 @@ export default function Header() {
           </li>
         </ul>
         <ul className="flex space-x-6">
-          <li>
-            <Link to="/login" className="hover:text-red-500">
-              Login
-            </Link>
-          </li>
-          <li>
-            <Link to="/register" className="hover:text-red-500">
-              Register
-            </Link>
-          </li>
+          {!AuthService.isAuthenticated ? (
+            <>
+              <li>
+                <Link to="/login" className="hover:text-red-500">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/register" className="hover:text-red-500">
+                  Register
+                </Link>
+              </li>
+            </>
+          ) : (
+            <button onClick={handleLogout} className="hover:text-red-500">
+              Logout
+            </button>
+          )}
         </ul>
       </nav>
     </header>

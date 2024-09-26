@@ -38,6 +38,15 @@ const AuthService = {
     }
   },
 
+  async logout() {
+    localStorage.removeItem("tokenType");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("expiresIn");
+    localStorage.removeItem("refreshToken");
+
+    this.isAuthenticated = false;
+  },
+
   async refreshToken() {
     const token = localStorage.getItem("refreshToken");
 
