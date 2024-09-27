@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white py-10">
+    <footer className="bg-black text-white py-5">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Company Introduction */}
@@ -45,7 +45,7 @@ export default function Footer() {
         </div>
 
         {/* Footer Bottom */}
-        <div className="text-center mt-8 text-gray-400">
+        <div className="text-center mt-2 text-gray-400">
           <p>&copy; 2024 Karting. All rights reserved.</p>
         </div>
       </div>
