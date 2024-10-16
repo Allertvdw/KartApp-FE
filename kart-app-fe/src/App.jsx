@@ -7,6 +7,7 @@ import Header from "./common/Header";
 import Footer from "./common/Footer";
 import Home from "./components/home/Home";
 import BookingForm from "./components/booking/BookingForm";
+import UserOverview from "./components/admin/users/UserOverview";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/booking" element={<BookingForm />} />
+        <Route path="/users" element={<UserOverview />} />
       </Routes>
       <Footer />
       <ToastContainer stacked position="top-center" />
