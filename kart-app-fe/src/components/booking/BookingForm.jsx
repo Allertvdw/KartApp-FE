@@ -54,7 +54,10 @@ export default function BookingForm() {
         throw new Error("Failed to book session");
       }
 
+      const data = await response.json();
+
       ToastNotification("success", "Session booked successfully.");
+      navigate(`confirmation/${data.id}`);
     } catch (error) {
       ToastNotification("error", error.message);
     } finally {
