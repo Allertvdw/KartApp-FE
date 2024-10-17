@@ -19,11 +19,17 @@ export default function BookingForm() {
   }, [date]);
 
   const fetchAvailableSessions = async () => {
-    const response = await fetch(
-      `https://localhost:7197/api/Session?date=${date}`
-    );
+    const response = await fetch(`https://localhost:7197/api/Session/${date}`);
     const data = await response.json();
     setSessions(data);
+  };
+
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   const handleSubmit = async (e) => {
@@ -54,7 +60,10 @@ export default function BookingForm() {
         throw new Error("Failed to book session");
       }
 
+      const data = await response.json();
+
       ToastNotification("success", "Session booked successfully.");
+      navigate(`confirmation/${data.id}`);
     } catch (error) {
       ToastNotification("error", error.message);
     } finally {
@@ -103,6 +112,7 @@ export default function BookingForm() {
             onChange={(e) => setDate(e.target.value)}
             className="border p-2 w-full"
             required
+            min={getTodayDate()}
           />
         </div>
         <div>
