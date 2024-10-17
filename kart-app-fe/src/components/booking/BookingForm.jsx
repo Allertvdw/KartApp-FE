@@ -6,6 +6,8 @@ export default function BookingForm() {
   const [date, setDate] = useState("");
   const [peopleCount, setPeopleCount] = useState(1);
   const [selectedSession, setSelectedSession] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -43,6 +45,8 @@ export default function BookingForm() {
         body: JSON.stringify({
           sessionId: selectedSession,
           peopleCount,
+          email,
+          phoneNumber,
         }),
       });
 
@@ -62,6 +66,32 @@ export default function BookingForm() {
     <div className="max-w-md mx-auto p-4 pt-20">
       <h1 className="text-2xl font-bold mb-4">Book a Karting Session</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block mb-2">
+            Email:
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border p-2 w-full"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="phoneNumber" className="block mb-2">
+            Phone number:
+          </label>
+          <input
+            type="phoneNumber"
+            id="phoneNumber"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            className="border p-2 w-full"
+            required
+          />
+        </div>
         <div>
           <label htmlFor="date" className="block mb-2">
             Date:
