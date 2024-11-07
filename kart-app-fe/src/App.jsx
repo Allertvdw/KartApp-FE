@@ -10,6 +10,7 @@ import BookingForm from "./components/booking/BookingForm";
 import BookingConfirmation from "./components/booking/BookingConfirmation";
 import UserOverview from "./components/admin/users/UserOverview";
 import Dashboard from "./components/admin/Dashboard";
+import CreateSessions from "./components/admin/sessions/CreateSessions";
 
 export default function App() {
   const location = useLocation();
@@ -28,8 +29,10 @@ export default function App() {
           path="/booking/confirmation/:bookingId"
           element={<BookingConfirmation />}
         />
+
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/users" element={<UserOverview />} />
+        <Route path="/admin/sessions/create" element={<CreateSessions />} />
       </Routes>
 
       {!isAdminPage && <Footer />}
