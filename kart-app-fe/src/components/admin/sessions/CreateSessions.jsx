@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import ToastNotification from "../../notifications/ToastNotification";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateSessions() {
   const [days, setDays] = useState([]);
   const [openingTime, setOpeningTime] = useState("");
   const [closingTime, setClosingTime] = useState("");
   const [interval, setInterval] = useState("");
+  const navigate = useNavigate();
 
   const dayOptions = [
     "Monday",
@@ -64,17 +66,14 @@ export default function CreateSessions() {
       if (!response.ok) throw new Error("Failed to create sessions");
 
       ToastNotification("success", "Sessions created successfully.");
-      setDays([]);
-      setOpeningTime("");
-      setClosingTime("");
-      setInterval("");
+      navigate("/admin/sessions");
     } catch (error) {
       ToastNotification("error", error.message);
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 pt-20">
+    <div className="max-w-lg mx-auto p-6 pt-10">
       <h1 className="text-3xl text-center font-bold mb-10">Create Sessions</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
