@@ -1,24 +1,106 @@
-import { useState } from "react";
-import { timeslots } from "../../assets/timeslots";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ToastNotification from "../notifications/ToastNotification";
 
 export default function BookingForm() {
   const [date, setDate] = useState("");
   const [peopleCount, setPeopleCount] = useState(1);
-  const [timeslot, setTimeslot] = useState("");
+  const [selectedSession, setSelectedSession] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [sessions, setSessions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (date) {
+      fetchAvailableSessions(date);
+    }
+  }, [date]);
+
+  const fetchAvailableSessions = async () => {
+    const response = await fetch(`https://localhost:7197/api/Session/${date}`);
+    const data = await response.json();
+    setSessions(data);
+  };
+
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      date,
-      peopleCount,
-      timeslot,
-    });
+
+    if (!selectedSession) {
+      ToastNotification("error", "Please select a timeslot.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("https://localhost:7197/api/Booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sessionId: selectedSession,
+          peopleCount,
+          email,
+          phoneNumber,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to book session");
+      }
+
+      const data = await response.json();
+
+      ToastNotification("success", "Session booked successfully.");
+      navigate(`confirmation/${data.id}`);
+    } catch (error) {
+      ToastNotification("error", error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="max-w-md mx-auto p-4 pt-20">
       <h1 className="text-2xl font-bold mb-4">Book a Karting Session</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block mb-2">
+            Email:
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border p-2 w-full"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="phoneNumber" className="block mb-2">
+            Phone number:
+          </label>
+          <input
+            type="phoneNumber"
+            id="phoneNumber"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            className="border p-2 w-full"
+            required
+          />
+        </div>
         <div>
           <label htmlFor="date" className="block mb-2">
             Date:
@@ -30,7 +112,37 @@ export default function BookingForm() {
             onChange={(e) => setDate(e.target.value)}
             className="border p-2 w-full"
             required
+            min={getTodayDate()}
           />
+        </div>
+        <div>
+          <label htmlFor="selectedSession" className="block mb-2">
+            Session:
+          </label>
+          <select
+            id="selectedSession"
+            value={selectedSession}
+            onChange={(e) => setSelectedSession(e.target.value)}
+            className="border p-2 w-full"
+            required
+          >
+            <option value="" disabled>
+              Select a time slot
+            </option>
+            {sessions.map((timeslot) => (
+              <option key={timeslot.id} value={timeslot.id}>
+                {new Date(timeslot.startTime).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}{" "}
+                -{" "}
+                {new Date(timeslot.endTime).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="peopleCount" className="block mb-2">
@@ -45,27 +157,6 @@ export default function BookingForm() {
             className="border p-2 w-full"
             required
           />
-        </div>
-        <div>
-          <label htmlFor="timeSlot" className="block mb-2">
-            Time slot:
-          </label>
-          <select
-            id="timeSlot"
-            value={timeslot}
-            onChange={(e) => setTimeslot(e.target.value)}
-            className="border p-2 w-full"
-            required
-          >
-            <option value="" disabled>
-              Select a time slot
-            </option>
-            {timeslots.map((slot, index) => (
-              <option key={index} value={slot}>
-                {slot}
-              </option>
-            ))}
-          </select>
         </div>
         <button
           type="submit"
