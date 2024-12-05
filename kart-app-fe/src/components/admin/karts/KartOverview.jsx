@@ -23,6 +23,10 @@ export default function KartOverview() {
     }
   };
 
+  const handleUpdateKartClick = (kartId) => {
+    navigate(`/admin/karts/update/${kartId}`);
+  };
+
   const handleAddKartClick = () => {
     navigate("/admin/karts/add");
   };
@@ -92,8 +96,14 @@ export default function KartOverview() {
                 <td className="p-2 border-b">{getKartStatus(kart.status)}</td>
                 <td className="p-2 border-b">
                   <button
+                    onClick={() => handleUpdateKartClick(kart.id)}
+                    className="text-blue-500 hover:underline"
+                  >
+                    Update
+                  </button>
+                  <button
                     onClick={() => deleteKart(kart.id)}
-                    className="text-red-500 hover:underline"
+                    className="mx-5 text-red-500 hover:underline"
                   >
                     Delete
                   </button>

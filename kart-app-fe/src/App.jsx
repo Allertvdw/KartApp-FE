@@ -15,6 +15,7 @@ import SessionOverview from "./components/admin/sessions/SessionOverview";
 import BookingOverview from "./components/admin/bookings/BookingOverview";
 import KartOverview from "./components/admin/karts/KartOverview";
 import AddKarts from "./components/admin/karts/AddKarts";
+import UpdateKarts from "./components/admin/karts/UpdateKarts";
 
 export default function App() {
   const location = useLocation();
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="/admin/sessions/create" element={<CreateSessions />} />
         <Route path="/admin/karts" element={<KartOverview />} />
         <Route path="/admin/karts/add" element={<AddKarts />} />
+        <Route path="/admin/karts/update/:kartId" element={<UpdateKarts />} />
       </Routes>
 
       {!isAdminPage && <Footer />}
