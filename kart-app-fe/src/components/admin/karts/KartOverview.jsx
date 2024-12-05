@@ -42,6 +42,27 @@ export default function KartOverview() {
     }
   };
 
+  const deleteKart = async (kartId) => {
+    try {
+      const response = await fetch(
+        `https://localhost:7197/api/Kart/${kartId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete kart.");
+      }
+
+      ToastNotification("success", "Kart deleted successfully.");
+      // Update the list by filtering out the deleted kart
+      setKarts((prevKarts) => prevKarts.filter((kart) => kart.id !== kartId));
+    } catch (error) {
+      ToastNotification("error", error.message);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-4 pt-10">
       <h1 className="text-3xl text-center font-bold mb-6">Kart Overview</h1>
@@ -59,6 +80,7 @@ export default function KartOverview() {
             <th className="p-2 border-b">Id</th>
             <th className="p-2 border-b">Number</th>
             <th className="p-2 border-b">Status</th>
+            <th className="p-2 border-b">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -68,6 +90,14 @@ export default function KartOverview() {
                 <td className="p-2 border-b">{kart.id}</td>
                 <td className="p-2 border-b">{kart.number}</td>
                 <td className="p-2 border-b">{getKartStatus(kart.status)}</td>
+                <td className="p-2 border-b">
+                  <button
+                    onClick={() => deleteKart(kart.id)}
+                    className="text-red-500 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
