@@ -12,6 +12,7 @@ import UserOverview from "./components/admin/users/UserOverview";
 import Dashboard from "./components/admin/Dashboard";
 import CreateSessions from "./components/admin/sessions/CreateSessions";
 import SessionOverview from "./components/admin/sessions/SessionOverview";
+import BookingOverview from "./components/admin/bookings/BookingOverview";
 
 export default function App() {
   const location = useLocation();
@@ -33,6 +34,7 @@ export default function App() {
 
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/users" element={<UserOverview />} />
+        <Route path="/admin/bookings" element={<BookingOverview />} />
         <Route path="/admin/sessions" element={<SessionOverview />} />
         <Route path="/admin/sessions/create" element={<CreateSessions />} />
       </Routes>
