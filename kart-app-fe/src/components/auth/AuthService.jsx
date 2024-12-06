@@ -1,89 +1,40 @@
-const AuthService = {
-  isAuthenticated: false,
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-  async checkAuthentication() {
-    let token = localStorage.getItem("accessToken");
+const AuthContext = createContext();
 
-    if (!token) {
-      const refreshed = await this.refreshToken();
-      if (!refreshed) {
-        this.isAuthenticated = false;
-        return false;
-      }
+export const AuthService = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-      token = localStorage.getItem("accessToken");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
     }
+    setLoading(false);
+  }, []);
 
-    try {
-      const response = await fetch("https://localhost:7197/manage/info", {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const login = (token) => {
+    localStorage.setItem("token", token);
+    setIsAuthenticated(true);
+  };
 
-      if (!response.ok) {
-        console.error("Authentication check failed.");
-        this.isAuthenticated = false;
-        return false;
-      }
+  const logout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+  };
 
-      this.isAuthenticated = true;
-      return true;
-    } catch (error) {
-      console.error("Error during authentication check: ", error);
-      this.isAuthenticated = false;
-      return false;
-    }
-  },
-
-  async logout() {
-    localStorage.removeItem("tokenType");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("expiresIn");
-    localStorage.removeItem("refreshToken");
-
-    this.isAuthenticated = false;
-  },
-
-  async refreshToken() {
-    const token = localStorage.getItem("refreshToken");
-
-    if (!token) {
-      this.isAuthenticated = false;
-      return false;
-    }
-
-    try {
-      const response = await fetch("https://localhost:7197/refresh", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ refreshToken }),
-      });
-
-      if (!response.ok) {
-        console.error("Failed to refresh token.");
-        this.isAuthenticated = false;
-        return false;
-      }
-
-      const data = await response.json();
-      const { accessToken, expiresIn } = data;
-
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("expiresIn", expiresIn);
-
-      this.isAuthenticated = true;
-      return true;
-    } catch (error) {
-      console.error("Error during token refresh: ", error);
-      this.isAuthenticated = false;
-      return false;
-    }
-  },
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export default AuthService;
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};

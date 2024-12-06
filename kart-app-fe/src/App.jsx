@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
+import { AuthService } from "./components/auth/AuthService";
 import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import { ToastContainer } from "react-toastify";
@@ -23,30 +24,32 @@ export default function App() {
 
   return (
     <>
-      {!isAdminPage && <Header />}
+      <AuthService>
+        {!isAdminPage && <Header />}
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<RegisterForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/booking" element={<BookingForm />} />
-        <Route
-          path="/booking/confirmation/:bookingId"
-          element={<BookingConfirmation />}
-        />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/booking" element={<BookingForm />} />
+          <Route
+            path="/booking/confirmation/:bookingId"
+            element={<BookingConfirmation />}
+          />
 
-        <Route path="/admin" element={<Dashboard />} />
-        <Route path="/admin/users" element={<UserOverview />} />
-        <Route path="/admin/bookings" element={<BookingOverview />} />
-        <Route path="/admin/sessions" element={<SessionOverview />} />
-        <Route path="/admin/sessions/create" element={<CreateSessions />} />
-        <Route path="/admin/karts" element={<KartOverview />} />
-        <Route path="/admin/karts/add" element={<AddKarts />} />
-        <Route path="/admin/karts/update/:kartId" element={<UpdateKarts />} />
-      </Routes>
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/users" element={<UserOverview />} />
+          <Route path="/admin/bookings" element={<BookingOverview />} />
+          <Route path="/admin/sessions" element={<SessionOverview />} />
+          <Route path="/admin/sessions/create" element={<CreateSessions />} />
+          <Route path="/admin/karts" element={<KartOverview />} />
+          <Route path="/admin/karts/add" element={<AddKarts />} />
+          <Route path="/admin/karts/update/:kartId" element={<UpdateKarts />} />
+        </Routes>
 
-      {!isAdminPage && <Footer />}
-      <ToastContainer stacked position="top-center" />
+        {!isAdminPage && <Footer />}
+        <ToastContainer stacked position="top-center" />
+      </AuthService>
     </>
   );
 }

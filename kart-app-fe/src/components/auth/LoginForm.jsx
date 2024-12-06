@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
-import AuthService from "../auth/AuthService";
+import { useAuth } from "../auth/AuthService";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSumbit = async (e) => {
     e.preventDefault();
@@ -15,7 +16,7 @@ export default function LoginForm() {
 
   const loginRequest = async () => {
     try {
-      const response = await fetch("https://localhost:7197/login", {
+      const response = await fetch("https://localhost:7197/api/User/login", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -31,39 +32,13 @@ export default function LoginForm() {
         return;
       }
 
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-
-      //   if (errorData.errors) {
-      //     const errorMessages = Object.values(errorData.errors).flat();
-      //     ToastNotification("error", errorMessages.join("\n"));
-      //     console.log(errorMessages);
-      //   } else if (errorData.message) {
-      //     ToastNotification("error", errorData.message);
-      //   }
-      //   return;
-      // }
-
-      const data = await response.json();
-      const { tokenType, accessToken, expiresIn, refreshToken } = data;
-
-      localStorage.setItem("tokenType", tokenType);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("expiresIn", expiresIn);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      const isAuthenticated = await AuthService.checkAuthentication();
-
-      if (isAuthenticated) {
-        ToastNotification("success", "Login successful.");
-        navigate("/");
-      } else {
-        ToastNotification("error", "Authentication failed.");
-        navigate("/login");
-      }
+      const data = await response.text();
+      login(data.token);
+      ToastNotification("success", "Login successful.");
+      navigate("/");
     } catch (error) {
       console.error("Error during login: ", error);
-      navigate("/login");
+      ToastNotification("error", "An error occurred during login.");
     }
   };
 

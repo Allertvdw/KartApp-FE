@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthService from "../components/auth/AuthService";
+import { useAuth } from "../components/auth/AuthService";
 import ToastNotification from "../components/notifications/ToastNotification";
 
 export default function Header() {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    AuthService.checkAuthentication();
-  }, []);
+  const { isAuthenticated, logout } = useAuth();
 
   const handleLogout = () => {
-    AuthService.logout();
+    logout();
     ToastNotification("success", "Logout successful.");
     navigate("/");
   };
@@ -50,7 +47,7 @@ export default function Header() {
           </li>
         </ul>
         <ul className="flex space-x-6">
-          {!AuthService.isAuthenticated ? (
+          {!isAuthenticated ? (
             <>
               <li>
                 <Link to="/login" className="hover:text-red-500">
