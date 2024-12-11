@@ -19,7 +19,7 @@ export default function AdminHeader() {
         {/* Logo */}
         <div className="text-2xl font-bold">
           <Link to="/admin" className="text-red-500">
-            Karting
+            Admin
           </Link>
         </div>
 

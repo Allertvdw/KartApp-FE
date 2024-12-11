@@ -101,7 +101,7 @@ export default function UpdateKarts() {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded"
+          className="w-full bg-red-500 hover:bg-red-600 text-white p-2 rounded"
         >
           Update Kart
         </button>

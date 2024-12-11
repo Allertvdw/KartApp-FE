@@ -73,7 +73,7 @@ export default function KartOverview() {
       <div className="flex justify-center mb-6">
         <button
           onClick={handleAddKartClick}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
           Add Kart
         </button>

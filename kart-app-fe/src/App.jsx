@@ -28,48 +28,62 @@ export default function App() {
   return (
     <>
       <AuthService>
-        {!isAdminPage && <Header />}
-
         <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/booking" element={<BookingForm />} />
+          {/* Public Pages */}
           <Route
-            path="/booking/confirmation/:bookingId"
-            element={<BookingConfirmation />}
+            path="/*"
+            element={
+              <>
+                <Header />
+                <div className="my-10"></div>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/register" element={<RegisterForm />} />
+                  <Route path="/login" element={<LoginForm />} />
+                  <Route path="/booking" element={<BookingForm />} />
+                  <Route
+                    path="/booking/confirmation/:bookingId"
+                    element={<BookingConfirmation />}
+                  />
+                </Routes>
+                <Footer />
+              </>
+            }
           />
 
-          {/* Admin Routes */}
+          {/* Admin Pages */}
           <Route
             path="/admin/*"
             element={
               <ProtectedRoute requiredRole="Admin">
-                <AdminHeader />
-                <div className="my-20"></div>
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="users" element={<UserOverview />} />
-                  <Route path="bookings" element={<BookingOverview />} />
-                  <Route path="sessions" element={<SessionOverview />} />
-                  <Route path="sessions/create" element={<CreateSessions />} />
-                  <Route path="karts" element={<KartOverview />} />
-                  <Route path="karts/add" element={<AddKarts />} />
-                  <Route
-                    path="karts/update/:kartId"
-                    element={<UpdateKarts />}
-                  />
-                </Routes>
+                <>
+                  <AdminHeader />
+                  <div className="my-20"></div>
+                  <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="users" element={<UserOverview />} />
+                    <Route path="bookings" element={<BookingOverview />} />
+                    <Route path="sessions" element={<SessionOverview />} />
+                    <Route
+                      path="sessions/create"
+                      element={<CreateSessions />}
+                    />
+                    <Route path="karts" element={<KartOverview />} />
+                    <Route path="karts/add" element={<AddKarts />} />
+                    <Route
+                      path="karts/update/:kartId"
+                      element={<UpdateKarts />}
+                    />
+                  </Routes>
+                </>
               </ProtectedRoute>
             }
           />
 
-          {/* Access Denied Routes */}
+          {/* Access Denied Route */}
           <Route path="/access-denied" element={<AccessDenied />} />
         </Routes>
 
-        {!isAdminPage && <Footer />}
         <ToastContainer stacked position="top-center" />
       </AuthService>
     </>
