@@ -29,6 +29,7 @@ export default function App() {
         {!isAdminPage && <Header />}
 
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/login" element={<LoginForm />} />
@@ -38,21 +39,27 @@ export default function App() {
             element={<BookingConfirmation />}
           />
 
+          {/* Admin Routes */}
           <Route
-            path="/admin"
+            path="/admin/*"
             element={
               <ProtectedRoute requiredRole="Admin">
-                <Dashboard />
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="users" element={<UserOverview />} />
+                  <Route path="bookings" element={<BookingOverview />} />
+                  <Route path="sessions" element={<SessionOverview />} />
+                  <Route path="sessions/create" element={<CreateSessions />} />
+                  <Route path="karts" element={<KartOverview />} />
+                  <Route path="karts/add" element={<AddKarts />} />
+                  <Route
+                    path="karts/update/:kartId"
+                    element={<UpdateKarts />}
+                  />
+                </Routes>
               </ProtectedRoute>
             }
           />
-          <Route path="/admin/users" element={<UserOverview />} />
-          <Route path="/admin/bookings" element={<BookingOverview />} />
-          <Route path="/admin/sessions" element={<SessionOverview />} />
-          <Route path="/admin/sessions/create" element={<CreateSessions />} />
-          <Route path="/admin/karts" element={<KartOverview />} />
-          <Route path="/admin/karts/add" element={<AddKarts />} />
-          <Route path="/admin/karts/update/:kartId" element={<UpdateKarts />} />
         </Routes>
 
         {!isAdminPage && <Footer />}
