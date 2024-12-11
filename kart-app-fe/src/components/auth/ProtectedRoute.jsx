@@ -7,8 +7,12 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 
   if (loading) return <div>Loading...</div>;
 
-  if (!isAuthenticated || role !== requiredRole) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (role !== requiredRole) {
+    return <Navigate to="/access-denied" replace />;
   }
 
   return children;

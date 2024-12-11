@@ -18,6 +18,7 @@ import KartOverview from "./components/admin/karts/KartOverview";
 import AddKarts from "./components/admin/karts/AddKarts";
 import UpdateKarts from "./components/admin/karts/UpdateKarts";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import AccessDenied from "./common/AccessDenied";
 
 export default function App() {
   const location = useLocation();
@@ -60,6 +61,9 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Access Denied Routes */}
+          <Route path="/access-denied" element={<AccessDenied />} />
         </Routes>
 
         {!isAdminPage && <Footer />}
