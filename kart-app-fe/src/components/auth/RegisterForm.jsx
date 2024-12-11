@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
 
 export default function RegisterForm() {
+  const [bookingId, setBookingId] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,19 +18,23 @@ export default function RegisterForm() {
 
   const registerRequest = async () => {
     try {
-      const response = await fetch("https://localhost:7197/api/User/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-          phoneNumber: phoneNumber,
-        }),
-      });
+      const response = await fetch(
+        "https://localhost:7197/api/Booking/register-and-link-booking",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            bookingId: bookingId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+            phoneNumber: phoneNumber,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -42,7 +47,7 @@ export default function RegisterForm() {
         return;
       }
 
-      ToastNotification("success", "Registration successful.");
+      ToastNotification("success", "Checked in and registration successful.");
       navigate("/login");
     } catch (error) {
       console.error("Error during registration: ", error);
@@ -58,6 +63,15 @@ export default function RegisterForm() {
       >
         <h1 className="text-2xl font-bold text-center mb-6">Register</h1>
         <div className="inputs space-y-4">
+          <div className="bookingId">
+            <input
+              value={bookingId}
+              onChange={(e) => setBookingId(e.target.value)}
+              type="id"
+              placeholder="Booking ID"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
           <div className="firstName">
             <input
               value={firstName}
