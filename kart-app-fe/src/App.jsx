@@ -19,6 +19,7 @@ import AddKarts from "./components/admin/karts/AddKarts";
 import UpdateKarts from "./components/admin/karts/UpdateKarts";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AccessDenied from "./common/AccessDenied";
+import AdminHeader from "./common/AdminHeader";
 
 export default function App() {
   const location = useLocation();
@@ -45,6 +46,8 @@ export default function App() {
             path="/admin/*"
             element={
               <ProtectedRoute requiredRole="Admin">
+                <AdminHeader />
+                <div className="my-20"></div>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="users" element={<UserOverview />} />
