@@ -17,6 +17,7 @@ import BookingOverview from "./components/admin/bookings/BookingOverview";
 import KartOverview from "./components/admin/karts/KartOverview";
 import AddKarts from "./components/admin/karts/AddKarts";
 import UpdateKarts from "./components/admin/karts/UpdateKarts";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 export default function App() {
   const location = useLocation();
@@ -37,7 +38,14 @@ export default function App() {
             element={<BookingConfirmation />}
           />
 
-          <Route path="/admin" element={<Dashboard />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requiredRole="Admin">
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/admin/users" element={<UserOverview />} />
           <Route path="/admin/bookings" element={<BookingOverview />} />
           <Route path="/admin/sessions" element={<SessionOverview />} />

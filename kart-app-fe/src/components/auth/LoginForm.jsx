@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
 import { useAuth } from "../auth/AuthService";
+import { jwtDecode } from "jwt-decode";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -32,10 +33,22 @@ export default function LoginForm() {
         return;
       }
 
-      const data = await response.text();
+      const data = await response.json();
       login(data.token);
-      ToastNotification("success", "Login successful.");
-      navigate("/");
+
+      const decodedToken = jwtDecode(data.token);
+      const role =
+        decodedToken[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ];
+
+      if (role === "Admin") {
+        ToastNotification("success", "Login successful.");
+        navigate("/admin");
+      } else {
+        ToastNotification("success", "Login successful.");
+        navigate("/");
+      }
     } catch (error) {
       console.error("Error during login: ", error);
       ToastNotification("error", "An error occurred during login.");
