@@ -58,7 +58,7 @@ export default function RegisterForm() {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="Email"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
           <div className="password">
@@ -67,11 +67,11 @@ export default function RegisterForm() {
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Password"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
         </div>
-        <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-6 hover:bg-blue-600">
+        <button className="w-full bg-red-500 text-white p-3 rounded-lg mt-6 hover:bg-red-600">
           Register
         </button>
       </form>
