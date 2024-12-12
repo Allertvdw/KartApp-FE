@@ -20,6 +20,7 @@ import UpdateKarts from "./components/admin/karts/UpdateKarts";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AccessDenied from "./common/AccessDenied";
 import AdminHeader from "./common/AdminHeader";
+import SessionDetails from "./components/admin/sessions/SessionDetails";
 
 export default function App() {
   const location = useLocation();
@@ -64,6 +65,10 @@ export default function App() {
                     <Route path="users" element={<UserOverview />} />
                     <Route path="bookings" element={<BookingOverview />} />
                     <Route path="sessions" element={<SessionOverview />} />
+                    <Route
+                      path="sessions/details/:sessionId"
+                      element={<SessionDetails />}
+                    />
                     <Route
                       path="sessions/create"
                       element={<CreateSessions />}

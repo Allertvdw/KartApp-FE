@@ -19,7 +19,9 @@ export default function BookingForm() {
   }, [date]);
 
   const fetchAvailableSessions = async () => {
-    const response = await fetch(`https://localhost:7197/api/Session/${date}`);
+    const response = await fetch(
+      `https://localhost:7197/api/Session/date/${date}`
+    );
     const data = await response.json();
     setSessions(data);
   };

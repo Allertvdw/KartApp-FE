@@ -25,6 +25,10 @@ export default function SessionOverview() {
     navigate("/admin/sessions/create");
   };
 
+  const handleSessionDetailsClick = (sessionId) => {
+    navigate(`/admin/sessions/details/${sessionId}`);
+  };
+
   const fetchSessions = async () => {
     try {
       const response = await fetch("https://localhost:7197/api/Session");
@@ -73,7 +77,10 @@ export default function SessionOverview() {
                   {formatTime(session.endTime)}
                 </td>
                 <td className="p-2 border-b">
-                  <button className="text-blue-500 hover:underline">
+                  <button
+                    onClick={() => handleSessionDetailsClick(session.id)}
+                    className="text-blue-500 hover:underline"
+                  >
                     Details
                   </button>
                 </td>
