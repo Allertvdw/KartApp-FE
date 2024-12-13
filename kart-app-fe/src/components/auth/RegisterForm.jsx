@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
+import { API_BASE_URL } from "../../config";
 
 export default function RegisterForm() {
   const [bookingId, setBookingId] = useState(null);
@@ -19,7 +20,7 @@ export default function RegisterForm() {
   const registerRequest = async () => {
     try {
       const response = await fetch(
-        "https://localhost:7197/api/Booking/register-and-link-booking",
+        `${API_BASE_URL}/Booking/register-and-link-booking`,
         {
           method: "POST",
           headers: {

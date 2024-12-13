@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ToastNotification from "../../notifications/ToastNotification";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { API_BASE_URL } from "../../../config";
 
 export default function UpdateKarts() {
   const { kartId } = useParams();
@@ -21,7 +22,7 @@ export default function UpdateKarts() {
 
   const fetchKartDetails = async () => {
     try {
-      const response = await fetch(`https://localhost:7197/api/Kart/${kartId}`);
+      const response = await fetch(`${API_BASE_URL}/Kart/${kartId}`);
       if (!response.ok) {
         throw new Error("Failed to fetch kart details.");
       }
@@ -38,18 +39,15 @@ export default function UpdateKarts() {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        `https://localhost:7197/api/Kart/${kartId}`,
-        {
-          method: "PUT",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            id: kartId,
-            number: number,
-            status: status,
-          }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/Kart/${kartId}`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          id: kartId,
+          number: number,
+          status: status,
+        }),
+      });
 
       if (!response.ok) throw new Error("Failed to update kart");
 

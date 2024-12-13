@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ToastNotification from "../../notifications/ToastNotification";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../../config";
 
 export default function AddKarts() {
   const [number, setNumber] = useState("");
@@ -17,7 +18,7 @@ export default function AddKarts() {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://localhost:7197/api/Kart", {
+      const response = await fetch(`${API_BASE_URL}/Kart`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({

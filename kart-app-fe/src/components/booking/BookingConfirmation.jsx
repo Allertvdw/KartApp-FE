@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
+import { API_BASE_URL } from "../../config";
 
 export default function BookingConfirmation() {
   const { bookingId } = useParams();
@@ -12,9 +13,7 @@ export default function BookingConfirmation() {
 
   const fetchBookingDetails = async () => {
     try {
-      const response = await fetch(
-        `https://localhost:7197/api/Booking/${bookingId}`
-      );
+      const response = await fetch(`${API_BASE_URL}/Booking/${bookingId}`);
       if (!response.ok) {
         throw new Error("Failed to fetch booking details.");
       }

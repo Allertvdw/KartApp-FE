@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ToastNotification from "../../notifications/ToastNotification";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../../config";
 
 export default function KartOverview() {
   const [karts, setKarts] = useState([]);
@@ -33,7 +34,7 @@ export default function KartOverview() {
 
   const fetchKarts = async () => {
     try {
-      const response = await fetch("https://localhost:7197/api/Kart");
+      const response = await fetch(`${API_BASE_URL}/Kart`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch karts.");
@@ -48,19 +49,15 @@ export default function KartOverview() {
 
   const deleteKart = async (kartId) => {
     try {
-      const response = await fetch(
-        `https://localhost:7197/api/Kart/${kartId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/Kart/${kartId}`, {
+        method: "DELETE",
+      });
 
       if (!response.ok) {
         throw new Error("Failed to delete kart.");
       }
 
       ToastNotification("success", "Kart deleted successfully.");
-      // Update the list by filtering out the deleted kart
       setKarts((prevKarts) => prevKarts.filter((kart) => kart.id !== kartId));
     } catch (error) {
       ToastNotification("error", error.message);

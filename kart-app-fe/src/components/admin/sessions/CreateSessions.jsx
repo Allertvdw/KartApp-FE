@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ToastNotification from "../../notifications/ToastNotification";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../../config";
 
 export default function CreateSessions() {
   const [days, setDays] = useState([]);
@@ -54,14 +55,11 @@ export default function CreateSessions() {
     };
 
     try {
-      const response = await fetch(
-        "https://localhost:7197/api/Session/generate",
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/Session/generate`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) throw new Error("Failed to create sessions");
 

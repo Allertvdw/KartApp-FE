@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
 import { useAuth } from "../auth/AuthService";
 import { jwtDecode } from "jwt-decode";
+import { API_BASE_URL } from "../../config";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ export default function LoginForm() {
 
   const loginRequest = async () => {
     try {
-      const response = await fetch("https://localhost:7197/api/User/login", {
+      const response = await fetch(`${API_BASE_URL}/User/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

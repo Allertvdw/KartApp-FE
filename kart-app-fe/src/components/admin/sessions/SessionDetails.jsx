@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ToastNotification from "../../notifications/ToastNotification";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { API_BASE_URL } from "../../../config";
 
 export default function SessionDetails() {
   const { sessionId } = useParams();
@@ -26,7 +27,7 @@ export default function SessionDetails() {
   const fetchSessionDetails = async () => {
     try {
       const response = await fetch(
-        `https://localhost:7197/api/Session/details?sessionId=${sessionId}`
+        `${API_BASE_URL}/Session/details?sessionId=${sessionId}`
       );
 
       if (!response.ok) {
