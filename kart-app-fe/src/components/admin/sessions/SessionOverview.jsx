@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ToastNotification from "../../notifications/ToastNotification";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../../config";
 
 export default function SessionOverview() {
   const [sessions, setSessions] = useState([]);
@@ -25,9 +26,13 @@ export default function SessionOverview() {
     navigate("/admin/sessions/create");
   };
 
+  const handleSessionDetailsClick = (sessionId) => {
+    navigate(`/admin/sessions/details/${sessionId}`);
+  };
+
   const fetchSessions = async () => {
     try {
-      const response = await fetch("https://localhost:7197/api/Session");
+      const response = await fetch(`${API_BASE_URL}/Session`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch sessions.");
@@ -46,7 +51,7 @@ export default function SessionOverview() {
       <div className="flex justify-center mb-6">
         <button
           onClick={handleCreateSessionClick}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
           Create Session
         </button>
@@ -73,7 +78,10 @@ export default function SessionOverview() {
                   {formatTime(session.endTime)}
                 </td>
                 <td className="p-2 border-b">
-                  <button className="text-blue-500 hover:underline">
+                  <button
+                    onClick={() => handleSessionDetailsClick(session.id)}
+                    className="text-blue-500 hover:underline"
+                  >
                     Details
                   </button>
                 </td>

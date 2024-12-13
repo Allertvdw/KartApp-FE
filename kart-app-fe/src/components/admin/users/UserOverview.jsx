@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ToastNotification from "../../notifications/ToastNotification";
+import { API_BASE_URL } from "../../../config";
 
 export default function UserOverview() {
   const [users, setUsers] = useState([]);
@@ -10,7 +11,7 @@ export default function UserOverview() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://localhost:7197/api/User");
+      const response = await fetch(`${API_BASE_URL}/User`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch users.");

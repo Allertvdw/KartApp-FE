@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
+import { API_BASE_URL } from "../../config";
 
 export default function BookingForm() {
   const [date, setDate] = useState("");
@@ -19,7 +20,7 @@ export default function BookingForm() {
   }, [date]);
 
   const fetchAvailableSessions = async () => {
-    const response = await fetch(`https://localhost:7197/api/Session/${date}`);
+    const response = await fetch(`${API_BASE_URL}/Session/date/${date}`);
     const data = await response.json();
     setSessions(data);
   };
@@ -43,7 +44,7 @@ export default function BookingForm() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://localhost:7197/api/Booking", {
+      const response = await fetch(`${API_BASE_URL}/Booking`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

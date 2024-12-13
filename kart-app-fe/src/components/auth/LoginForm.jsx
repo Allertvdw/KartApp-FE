@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../notifications/ToastNotification";
-import AuthService from "../auth/AuthService";
+import { useAuth } from "../auth/AuthService";
+import { jwtDecode } from "jwt-decode";
+import { API_BASE_URL } from "../../config";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSumbit = async (e) => {
     e.preventDefault();
@@ -15,7 +18,7 @@ export default function LoginForm() {
 
   const loginRequest = async () => {
     try {
-      const response = await fetch("https://localhost:7197/login", {
+      const response = await fetch(`${API_BASE_URL}/User/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -31,39 +34,25 @@ export default function LoginForm() {
         return;
       }
 
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-
-      //   if (errorData.errors) {
-      //     const errorMessages = Object.values(errorData.errors).flat();
-      //     ToastNotification("error", errorMessages.join("\n"));
-      //     console.log(errorMessages);
-      //   } else if (errorData.message) {
-      //     ToastNotification("error", errorData.message);
-      //   }
-      //   return;
-      // }
-
       const data = await response.json();
-      const { tokenType, accessToken, expiresIn, refreshToken } = data;
+      login(data.token);
 
-      localStorage.setItem("tokenType", tokenType);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("expiresIn", expiresIn);
-      localStorage.setItem("refreshToken", refreshToken);
+      const decodedToken = jwtDecode(data.token);
+      const role =
+        decodedToken[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ];
 
-      const isAuthenticated = await AuthService.checkAuthentication();
-
-      if (isAuthenticated) {
+      if (role === "Admin") {
+        ToastNotification("success", "Login successful.");
+        navigate("/admin");
+      } else {
         ToastNotification("success", "Login successful.");
         navigate("/");
-      } else {
-        ToastNotification("error", "Authentication failed.");
-        navigate("/login");
       }
     } catch (error) {
       console.error("Error during login: ", error);
-      navigate("/login");
+      ToastNotification("error", "An error occurred during login.");
     }
   };
 
@@ -81,7 +70,7 @@ export default function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="Email"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
           <div className="password">
@@ -90,11 +79,11 @@ export default function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Password"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
         </div>
-        <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-6 hover:bg-blue-600">
+        <button className="w-full bg-red-500 text-white p-3 rounded-lg mt-6 hover:bg-red-600">
           Login
         </button>
       </form>
