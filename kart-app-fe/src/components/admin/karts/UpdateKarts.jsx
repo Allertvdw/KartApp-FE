@@ -39,7 +39,7 @@ export default function UpdateKarts() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/Kart/${kartId}`, {
+      const response = await fetch(`${API_BASE_URL}/Kart`, {
         method: "PUT",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -52,7 +52,7 @@ export default function UpdateKarts() {
       if (!response.ok) throw new Error("Failed to update kart");
 
       ToastNotification("success", "Kart updated successfully.");
-      navigate(`/admin/karts/update/${kartId}`);
+      navigate("/admin/karts");
     } catch (error) {
       ToastNotification("error", error.message);
     }
