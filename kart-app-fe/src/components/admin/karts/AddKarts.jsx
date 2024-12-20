@@ -27,7 +27,16 @@ export default function AddKarts() {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to add kart");
+      if (!response.ok) {
+        const errorData = await response.json();
+
+        if (errorData.errors) {
+          const errorMessages = Object.values(errorData.errors).flat();
+          ToastNotification("error", errorMessages.join("\n"));
+          console.log(errorMessages);
+        }
+        return;
+      }
 
       ToastNotification("success", "Kart added successfully.");
       navigate("/admin/karts");
