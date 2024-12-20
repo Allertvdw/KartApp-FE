@@ -44,6 +44,9 @@ export default function RegisterForm() {
           const errorMessages = Object.values(errorData.errors).flat();
           ToastNotification("error", errorMessages.join("\n"));
           console.log(errorMessages);
+        } else {
+          const errors = Object.values(errors);
+          ToastNotification("error", errors);
         }
         return;
       }
