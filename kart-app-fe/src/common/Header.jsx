@@ -54,19 +54,9 @@ export default function Header() {
                   Login
                 </Link>
               </li>
-              <li>
-                <Link to="/register" className="hover:text-red-500">
-                  Register
-                </Link>
-              </li>
             </>
           ) : (
             <>
-              <li>
-                <Link to="/profile" className="hover:text-red-500">
-                  Profile
-                </Link>
-              </li>
               <li>
                 <button onClick={handleLogout} className="hover:text-red-500">
                   Logout

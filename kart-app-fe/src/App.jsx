@@ -21,6 +21,8 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AccessDenied from "./common/AccessDenied";
 import AdminHeader from "./common/AdminHeader";
 import SessionDetails from "./components/admin/sessions/SessionDetails";
+import About from "./components/home/AboutUs";
+import Contact from "./components/home/Contact";
 
 export default function App() {
   const location = useLocation();
@@ -39,7 +41,8 @@ export default function App() {
                 <div className="my-10"></div>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/register" element={<RegisterForm />} />
+                  <Route path="/aboutus" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
                   <Route path="/login" element={<LoginForm />} />
                   <Route path="/booking" element={<BookingForm />} />
                   <Route
@@ -79,6 +82,7 @@ export default function App() {
                       path="karts/update/:kartId"
                       element={<UpdateKarts />}
                     />
+                    <Route path="/register" element={<RegisterForm />} />
                   </Routes>
                 </>
               </ProtectedRoute>
