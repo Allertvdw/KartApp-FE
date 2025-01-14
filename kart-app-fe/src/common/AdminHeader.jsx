@@ -45,6 +45,11 @@ export default function AdminHeader() {
               Karts
             </Link>
           </li>
+          <li>
+            <Link to="/admin/register" className="hover:text-red-500">
+              Register
+            </Link>
+          </li>
         </ul>
         <ul className="flex space-x-6">
           <li>
