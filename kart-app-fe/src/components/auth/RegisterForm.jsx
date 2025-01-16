@@ -52,7 +52,15 @@ export default function RegisterForm() {
       }
 
       ToastNotification("success", "Checked in and registration successful.");
-      navigate("/login");
+
+      setBookingId("");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setPhoneNumber("");
+
+      navigate("/admin/register");
     } catch (error) {
       console.error("Error during registration: ", error);
       ToastNotification("error", "An error occurred during registration.");
